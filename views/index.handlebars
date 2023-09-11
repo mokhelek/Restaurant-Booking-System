@@ -2,18 +2,18 @@
 
     <h2 class="title is-2">Book a table</h2>
 
-    <div class="notification is-danger is-light">
-        {{!-- you can remove the button below if you want --}}
-        <button class="delete"></button>
-        Error Flash messages goes here...
-        <a href="https://bulma.io/documentation/elements/notification/">Read here if you wanna change the style</a>
-    </div>
+    {{#if messages.error}}
+        <div class="notification is-danger is-light">
+            <center>  {{messages.error}} </center> 
+        </div>
+    {{/if}}
+
+
+  {{#if messages.success}}
     <div class="notification is-success is-light">
-        {{!-- you can remove the button below if you want --}}
-        <button class="delete"></button>
-        Success Flash messages goes here...
-        <a href="https://bulma.io/documentation/elements/notification/">Read here if you wanna change the style</a>
+        <center> {{messages.success}}  </center>
     </div>
+  {{/if}}
 
 
     <div class="columns">

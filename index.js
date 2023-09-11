@@ -2,8 +2,9 @@ import express from "express";
 // import pgp from "pg-promise";
 import exphbs from "express-handlebars";
 import bodyParser from "body-parser";
-import flash from "flash-express";
-
+// import flash from "flash-express";
+import flash from "express-flash";
+import session from "express-session";
 
 const app = express()
 
@@ -15,8 +16,20 @@ db.connect();
 
 
 
-app.use(express.static('public'));
+app.use(
+    session({
+        secret: "<add a secret string here>",
+        resave: false,
+        saveUninitialized: true,
+    })
+);
 app.use(flash());
+
+
+
+
+
+app.use(express.static('public'));
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -48,7 +61,9 @@ app.post("/book", async (req, res) => {
         phoneNumber: req.body.phone_number ,
         seats: Number(req.body.booking_size)
     }
-    await restaurantTableBooking.bookTable(bookingDetails);
+    let result = await restaurantTableBooking.bookTable(bookingDetails);
+    console.log(result)
+    req.flash("error", result);
 
     res.redirect("/")
 });
