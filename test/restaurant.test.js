@@ -101,7 +101,6 @@ describe("The restaurant booking table", function () {
     });
 
 
-
     // it("should check if there are available seats for a booking.", async function () {
     //     const restaurantTableBooking = await RestaurantTableBooking(db);
 
@@ -112,6 +111,7 @@ describe("The restaurant booking table", function () {
     //     assert.deepEqual(true, false);
     // });
 
+    
     it("Check if the booking has a user name provided.", async function () {
         const restaurantTableBooking = await RestaurantTableBooking(db);
         assert.deepEqual("Please enter a username", await restaurantTableBooking.bookTable({
