@@ -23,7 +23,7 @@
         <div class="column">
             <div class="panel">
                 <p class="panel-heading">
-                    Table XYZ
+                    {{this.table_name}}
                 </p>
                 <div class="panel-block">
                     <div class="field is-horizontal">
@@ -42,7 +42,7 @@
                         <div class="field-body">
                             <div class="field">
                                 <p class="control">
-                                    <input class="input is-static" type="email" value="5" readonly>
+                                    <input class="input is-static" type="email" value="{{this.capacity}}" readonly>
                                 </p>
                             </div>
                         </div>
@@ -51,11 +51,11 @@
                 <div class="panel-block">
 
                     <div class="control">
-                        {{#if booked}}
+                        {{#if this.booked}}
                         <img src="./images/reserved.png" width="60">
                         {{else}}
                         <label class="radio">
-                            <input type="radio" name="tableId" id="tableId">
+                            <input value="{{this.table_name}}" type="radio" name="tableId" id="tableId">
                             Book this table
                         </label>
                         {{/if}}
