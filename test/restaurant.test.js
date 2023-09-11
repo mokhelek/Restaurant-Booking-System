@@ -3,6 +3,7 @@ import RestaurantTableBooking from "../services/restaurant.js";
 
 import 'dotenv/config';
 import pgPromise from "pg-promise";
+import { log } from "console";
 
 const connection = process.env.DATABASE_URL;
 const db = pgPromise()(connection);
@@ -12,15 +13,14 @@ db.connect();
 
 describe("The restaurant booking table", function () {
     this.timeout(10000);
-    beforeEach(async function () {
-        try {
-            // clean the tables before each test run
-            // await db.none("TRUNCATE TABLE table_booking RESTART IDENTITY CASCADE;");
-        } catch (err) {
-            console.log(err);
-            throw err;
-        }
-    });
+    // beforeEach(async function () {
+    //     try {
+    //         await db.any("UPDATE table_booking SET booked = $1, username = $2, number_of_people = $3,contact_number = $4 ",[false,'',null,null])
+    //     } catch (err) {
+    //         console.log(err);
+    //         throw err;
+    //     }
+    // });
 
     // it("Get all the available tables", async function () {
     //     const restaurantTableBooking = await RestaurantTableBooking(db);
@@ -87,9 +87,9 @@ describe("The restaurant booking table", function () {
 
     it("should be able to book a table.", async function () {
         let restaurantTableBooking = RestaurantTableBooking(db);
-        // Table three should not be booked
-        assert.equal(true, await restaurantTableBooking.isTableBooked('Table three'));
-        // book Table three
+        //Table three should not be booked
+        assert.equal(false, await restaurantTableBooking.isTableBooked('Table three'));
+        //book Table three
 
         await restaurantTableBooking.bookTable({
             tableName: 'Table three',
@@ -100,6 +100,7 @@ describe("The restaurant booking table", function () {
 
         // Table three should be booked now
         const booked = await restaurantTableBooking.isTableBooked('Table three')
+        console.log("booked ", booked)
         assert.equal(true, booked);
     });
 
