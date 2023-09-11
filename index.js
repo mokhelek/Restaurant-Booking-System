@@ -62,7 +62,6 @@ app.post("/book", async (req, res) => {
         seats: Number(req.body.booking_size)
     }
     let result = await restaurantTableBooking.bookTable(bookingDetails);
-    console.log(result)
     req.flash("error", result);
 
     res.redirect("/")
@@ -70,7 +69,6 @@ app.post("/book", async (req, res) => {
 
 app.get("/bookings", async (req, res) => {
     let tables = await restaurantTableBooking.getBookedTables();
-    console.log(tables)
     res.render('bookings', {tables})
 });
 
@@ -81,8 +79,8 @@ app.get("/bookings/:username", async (req, res) => {
 
 
 
-app.post("/cancel", async (req, res) => {
-    
+app.get("/cancel/:tableName", async (req, res) => {
+    await restaurantTableBooking.cancelTableBooking(req.params.tableName);
     res.redirect("/bookings")
 });
 
