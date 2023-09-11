@@ -53,6 +53,7 @@ app.get("/", async (req, res) => {
     res.render('index', {tables})
 });
 
+// A route to place a table booking
 app.post("/book", async (req, res) => {
     // const tables = await restaurantTableBooking.getTables()
     let bookingDetails = {
@@ -62,23 +63,30 @@ app.post("/book", async (req, res) => {
         seats: Number(req.body.booking_size)
     }
     let result = await restaurantTableBooking.bookTable(bookingDetails);
-    req.flash("error", result);
+    if(result.bool){
+        req.flash("success", result.message);
+    }else{
+        req.flash("error", result);
+    }
 
     res.redirect("/")
 });
 
+
+//  A route to view all the booking
 app.get("/bookings", async (req, res) => {
     let tables = await restaurantTableBooking.getBookedTables();
     res.render('bookings', {tables})
 });
 
+
+//  A route to get the bookings of a user
 app.get("/bookings/:username", async (req, res) => {
     let tables = await restaurantTableBooking.getBookedTablesForUser(req.params.username);
     res.render('bookings', {tables})
 });
 
-
-
+// A route to cancel a booking
 app.get("/cancel/:tableName", async (req, res) => {
     await restaurantTableBooking.cancelTableBooking(req.params.tableName);
     res.redirect("/bookings")
