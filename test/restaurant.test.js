@@ -22,11 +22,69 @@ describe("The restaurant booking table", function () {
         }
     });
 
-    // it("Get all the available tables", async function () {
-    //     const restaurantTableBooking = await RestaurantTableBooking(db);
+    it("Get all the available tables", async function () {
+        const restaurantTableBooking = await RestaurantTableBooking(db);
 
-    //     assert.deepEqual([{}, {}, {}, {}, {}], await restaurantTableBooking.getTables());
-    // });
+        const expectedOutput = [
+            {
+              id: 1,
+              table_name: 'Table one',
+              capacity: 4,
+              booked: false,
+              username: '',
+              number_of_people: null,
+              contact_number: null
+            },
+            {
+              id: 2,
+              table_name: 'Table two',
+              capacity: 6,
+              booked: false,
+              username: '',
+              number_of_people: null,
+              contact_number: null
+            },
+            {
+              id: 3,
+              table_name: 'Table three',
+              capacity: 4,
+              booked: false,
+              username: '',
+              number_of_people: null,
+              contact_number: null
+            },
+            {
+                id: 4,
+              table_name: 'Table four',
+              capacity: 2,
+              booked: false,
+              username: '',
+              number_of_people: null,
+              contact_number: null
+            },
+            {
+                id: 5,
+                table_name: 'Table five',
+                capacity: 6,
+                booked: false,
+                username: '',
+                number_of_people: null,
+                contact_number: null
+            },
+            {
+              id: 6,
+              table_name: 'Table six',
+              capacity: 4,
+              booked: false,
+              username: '',
+              number_of_people: null,
+              contact_number: null
+            }
+          ]
+          
+
+        assert.deepEqual(expectedOutput, await restaurantTableBooking.getTables());
+    });
 
 
     it("It should check if the capacity is not greater than the available seats.", async function () {
