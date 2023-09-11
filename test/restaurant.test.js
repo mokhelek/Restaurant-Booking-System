@@ -1,11 +1,13 @@
 import assert from "assert"
 import RestaurantTableBooking from "../services/restaurant.js";
-import pgPromise from 'pg-promise';
 
-const DATABASE_URL = '';
+import 'dotenv/config';
+import pgPromise from "pg-promise";
 
-const connectionString = process.env.DATABASE_URL || DATABASE_URL;
-const db = pgPromise()(connectionString);
+const connection = process.env.DATABASE_URL;
+const db = pgPromise()(connection);
+db.connect();
+
 
 describe("The restaurant booking table", function () {
     beforeEach(async function () {

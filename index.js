@@ -1,10 +1,19 @@
 import express from "express";
-import pgp from "pg-promise";
+// import pgp from "pg-promise";
 import exphbs from "express-handlebars";
 import bodyParser from "body-parser";
 import flash from "flash-express";
 
+
 const app = express()
+
+import pgPromise from "pg-promise";
+import 'dotenv/config';
+const connection = process.env.DATABASE_URL;
+const db = pgPromise()(connection);
+db.connect();
+
+
 
 app.use(express.static('public'));
 app.use(flash());

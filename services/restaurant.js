@@ -30,8 +30,8 @@ const restaurant = (db) => {
         getBookedTables,
         isTableBooked,
         cancelTableBooking,
-        editTableBooking,
         getBookedTablesForUser
+        // editTableBooking,
     }
 }
 
