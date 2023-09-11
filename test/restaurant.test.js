@@ -196,7 +196,28 @@ describe("The restaurant booking table", function () {
         });
 
         // should only return 2 bookings as two of the bookings were for the same table
-        assert.deepEqual([{ table_name: "Table four" }, { table_name: "Table five" }], await restaurantTableBooking.getBookedTablesForUser("jodie"));
+        let expectedOutput = [
+            {
+              booked: true,
+              capacity: 2,
+              contact_number: 840098910,
+              id: 4,
+              number_of_people: 2,
+              table_name: 'Table four',
+              username: 'jodie'
+            },
+            {
+              booked: true,
+              capacity: 6,
+              contact_number: 840098910,
+              id: 5,
+              number_of_people: 4,
+              table_name: 'Table five',
+              username: 'jodie'
+            }
+          ]
+          
+        assert.deepEqual(expectedOutput, await restaurantTableBooking.getBookedTablesForUser("jodie"));
     });
 
     it("should be able to cancel a table booking", async function () {

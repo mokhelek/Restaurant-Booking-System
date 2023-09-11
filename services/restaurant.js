@@ -21,15 +21,20 @@ const restaurant = (db) => {
         if (checkAvailTables(allTables, tableName.tableName)) {
             if (tableName.username) {
                 if (tableName.phoneNumber) {
-                    if (requestedTable.capacity >= tableName.seats) {
-                        const updateQuery = `UPDATE table_booking SET booked = $1,
-                            username = $2, 
-                            number_of_people = $3,
-                            contact_number = $4 
-                            WHERE table_name = $5`;
-                        await db.any(updateQuery, [true, tableName.username.toLowerCase(), tableName.seats, parseInt(tableName.phoneNumber.replace(/\D/g, ""), 10), tableName.tableName]);
-                    } else {
-                        return "capacity greater than the table seats";
+                    if(tableName.seats){
+                        if (requestedTable.capacity >= tableName.seats) {
+                            const updateQuery = `UPDATE table_booking SET booked = $1,
+                                username = $2, 
+                                number_of_people = $3,
+                                contact_number = $4 
+                                WHERE table_name = $5`;
+                            await db.any(updateQuery, [true, tableName.username.toLowerCase(), tableName.seats, parseInt(tableName.phoneNumber.replace(/\D/g, ""), 10), tableName.tableName]);
+                            return {bool:true, message:"Successfully placed a booking"};
+                        } else {
+                            return "capacity greater than the table seats";
+                        }
+                    }else{
+                        return "Please insert size number"
                     }
                 } else {
                     return "Please enter a contact number";
@@ -43,7 +48,7 @@ const restaurant = (db) => {
     }
 
     async function getBookedTables() {
-        let allBookedTables = await db.manyOrNone("SELECT table_name FROM table_booking WHERE booked=true");
+        let allBookedTables = await db.manyOrNone("SELECT * FROM table_booking WHERE booked=true");
         return allBookedTables;
     }
 
@@ -58,7 +63,7 @@ const restaurant = (db) => {
     }
 
     async function getBookedTablesForUser(username) {
-        const bookedTablesForUser = await db.manyOrNone("SELECT table_name FROM table_booking WHERE username = $1 ORDER BY id ASC", [username.toLowerCase()]);
+        const bookedTablesForUser = await db.manyOrNone("SELECT * FROM table_booking WHERE username = $1 ORDER BY id ASC", [username.toLowerCase()]);
         return bookedTablesForUser;
     }
 

@@ -68,9 +68,24 @@ app.post("/book", async (req, res) => {
     res.redirect("/")
 });
 
-app.get("/bookings", (req, res) => {
-    res.render('bookings', { tables : [{}, {}, {}, {}, {}, {}]})
+app.get("/bookings", async (req, res) => {
+    let tables = await restaurantTableBooking.getBookedTables();
+    console.log(tables)
+    res.render('bookings', {tables})
 });
+
+app.get("/bookings/:username", async (req, res) => {
+    let tables = await restaurantTableBooking.getBookedTablesForUser(req.params.username);
+    res.render('bookings', {tables})
+});
+
+
+
+app.post("/cancel", async (req, res) => {
+    
+    res.redirect("/bookings")
+});
+
 
 
 var portNumber = process.env.PORT || 3000;
