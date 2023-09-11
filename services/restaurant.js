@@ -2,6 +2,8 @@ const restaurant = (db) => {
 
     async function getTables() {
         // get all the available tables
+        let allTables = await db.any("SELECT * FROM table_booking");
+        return allTables;
     }
 
     async function bookTable(tableName) {
