@@ -6,8 +6,49 @@ const restaurant = (db) => {
         return allTables;
     }
 
+    function checkAvailTables(tables, requested){
+        let tablesArr = [];
+     
+        for(let i of tables){
+            tablesArr.push(i.table_name)
+        }
+        return (tablesArr.includes(requested))
+    }
+
     async function bookTable(tableName) {
         // book a table by name
+        const allTables = await db.manyOrNone("SELECT table_name FROM table_booking")       
+        const requestedTable = await db.oneOrNone("SELECT * FROM table_booking WHERE table_name = $1", [tableName.tableName])
+        
+        if(checkAvailTables(allTables,tableName.tableName)){
+            if(tableName.username){
+                if(tableName.phoneNumber){
+                    if(requestedTable < tableName.seats){
+                        // ? APPROVED
+                    }else{
+                        return "capacity greater than the table seats";
+                    }
+                }else{
+                    return "Please enter a contact number";
+                }
+            }else{
+                return "Please enter a username" ;
+            }
+        }else{
+            return "Invalid table name provided";
+        }
+
+
+ 
+       
+
+        // const updateQuery = `UPDATE table_booking SET booked = $1,
+        //     username = $2, 
+        //     number_of_people = $3,
+        //     contact_number = $4 
+        //     WHERE table_name = $5` ;
+
+        // db.any(updateQuery,[true, tableName.username, tableName.seats, tableName.phoneNumber, tableName.tableName])
     }
 
     async function getBookedTables() {
