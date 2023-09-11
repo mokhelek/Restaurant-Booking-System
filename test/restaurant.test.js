@@ -5,7 +5,7 @@ import 'dotenv/config';
 import pgPromise from "pg-promise";
 
 
-const connection = process.env.DATABASE_URL;
+const connection = process.env.DATABASE_URL_TEST;
 const db = pgPromise()(connection);
 db.connect();
 
