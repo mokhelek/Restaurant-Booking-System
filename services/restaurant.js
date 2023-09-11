@@ -52,7 +52,9 @@ const restaurant = (db) => {
     }
 
     async function getBookedTables() {
-        // get all the booked tables
+        let allBookedTables = await db.manyOrNone("SELECT table_name FROM table_booking WHERE booked=true");
+        console.log("Booked Table  ",allBookedTables);
+        return allBookedTables
     }
 
     async function isTableBooked(tableName) {
@@ -62,6 +64,8 @@ const restaurant = (db) => {
 
     async function cancelTableBooking(tableName) {
         // cancel a table by name
+        await db.any("UPDATE table_booking SET booked = $1, username = $2, number_of_people = $3,contact_number = $4 WHERE table_name=$5",[false,'',null,null,tableName])
+
     }
 
     async function getBookedTablesForUser(username) {

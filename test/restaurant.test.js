@@ -140,31 +140,31 @@ describe("The restaurant booking table", function () {
         assert.deepEqual([{table_name: 'Table four' }, { table_name: 'Table five' }], await restaurantTableBooking.getBookedTablesForUser('jodie'));
     });
 
-    // it("should be able to cancel a table booking", async function () {
-    //     let restaurantTableBooking = await RestaurantTableBooking(db);
+    it("should be able to cancel a table booking", async function () {
+        let restaurantTableBooking = await RestaurantTableBooking(db);
 
-    //     await restaurantTableBooking.bookTable({
-    //         tableName: 'Table five',
-    //         username: 'Jodie',
-    //         phoneNumber: '084 009 8910',
-    //         seats: 4
-    //     });
+        await restaurantTableBooking.bookTable({
+            tableName: 'Table five',
+            username: 'Jodie',
+            phoneNumber: '084 009 8910',
+            seats: 4
+        });
 
-    //     restaurantTableBooking.bookTable({
-    //         tableName: 'Table four',
-    //         username: 'Kim',
-    //         phoneNumber: '084 009 8910',
-    //         seats: 2
-    //     });
+        restaurantTableBooking.bookTable({
+            tableName: 'Table four',
+            username: 'Kim',
+            phoneNumber: '084 009 8910',
+            seats: 2
+        });
 
-    //     let bookedTables = await restaurantTableBooking.getBookedTables();
-    //     assert.equal(2, bookedTables.length);
+        let bookedTables = await restaurantTableBooking.getBookedTables();
+        assert.equal(2, bookedTables.length);
 
-    //     await restaurantTableBooking.cancelTableBooking("Table four");
+        await restaurantTableBooking.cancelTableBooking("Table four");
 
-    //     bookedTables = await restaurantTableBooking.getBookedTables();
-    //     assert.equal(1, bookedTables.length);
-    // });
+        bookedTables = await restaurantTableBooking.getBookedTables();
+        assert.equal(1, bookedTables.length);
+    });
 
     after(function () {
         db.$pool.end;
