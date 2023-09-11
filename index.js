@@ -54,6 +54,9 @@ app.get("/", async (req, res) => {
 });
 
 // A route to place a table booking
+//  get the data frm req.body
+// call the  bookTable function 
+// render flash messages for feedback
 app.post("/book", async (req, res) => {
     // const tables = await restaurantTableBooking.getTables()
     let bookingDetails = {
@@ -74,6 +77,7 @@ app.post("/book", async (req, res) => {
 
 
 //  A route to view all the booking
+// call the getBookedTables functin and render to template
 app.get("/bookings", async (req, res) => {
     let tables = await restaurantTableBooking.getBookedTables();
     res.render('bookings', {tables})
@@ -81,12 +85,14 @@ app.get("/bookings", async (req, res) => {
 
 
 //  A route to get the bookings of a user
+// call the bookedTablesFor User and render to template
 app.get("/bookings/:username", async (req, res) => {
     let tables = await restaurantTableBooking.getBookedTablesForUser(req.params.username);
     res.render('bookings', {tables})
 });
 
 // A route to cancel a booking
+// call the cancelBooking function and redirect
 app.get("/cancel/:tableName", async (req, res) => {
     await restaurantTableBooking.cancelTableBooking(req.params.tableName);
     res.redirect("/bookings")
