@@ -22,7 +22,7 @@ const restaurant = (db) => {
         if(checkAvailTables(allTables,tableName.tableName)){
             if(tableName.username){
                 if(tableName.phoneNumber){
-                    console.log(requestedTable.capacity)
+        
                     if(requestedTable.capacity >= tableName.seats){            
 
                             const updateQuery = `UPDATE table_booking SET booked = $1,
@@ -32,7 +32,7 @@ const restaurant = (db) => {
                             WHERE table_name = $5` 
                             ;
 
-                            await db.any(updateQuery,[true, tableName.username, tableName.seats, parseInt(tableName.phoneNumber, 10), tableName.tableName])
+                            await db.any(updateQuery,[true, (tableName.username).toLowerCase() , tableName.seats, parseInt((tableName.phoneNumber).replace(/\D/g, ''), 10), tableName.tableName])
                     }else{
                         return "capacity greater than the table seats";
                     }
@@ -65,7 +65,8 @@ const restaurant = (db) => {
     }
 
     async function getBookedTablesForUser(username) {
-        // get user table booking
+        const bookedTablesForUser = await db.manyOrNone("SELECT table_name FROM table_booking WHERE username = $1", [username.toLowerCase()]);
+        return bookedTablesForUser;
     }
 
     return {

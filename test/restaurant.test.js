@@ -3,7 +3,7 @@ import RestaurantTableBooking from "../services/restaurant.js";
 
 import 'dotenv/config';
 import pgPromise from "pg-promise";
-import { log } from "console";
+
 
 const connection = process.env.DATABASE_URL;
 const db = pgPromise()(connection);
@@ -13,14 +13,14 @@ db.connect();
 
 describe("The restaurant booking table", function () {
     this.timeout(10000);
-    // beforeEach(async function () {
-    //     try {
-    //         await db.any("UPDATE table_booking SET booked = $1, username = $2, number_of_people = $3,contact_number = $4 ",[false,'',null,null])
-    //     } catch (err) {
-    //         console.log(err);
-    //         throw err;
-    //     }
-    // });
+    beforeEach(async function () {
+        try {
+            await db.any("UPDATE table_booking SET booked = $1, username = $2, number_of_people = $3,contact_number = $4 ",[false,'',null,null])
+        } catch (err) {
+            console.log(err);
+            throw err;
+        }
+    });
 
     // it("Get all the available tables", async function () {
     //     const restaurantTableBooking = await RestaurantTableBooking(db);
@@ -100,45 +100,45 @@ describe("The restaurant booking table", function () {
 
         // Table three should be booked now
         const booked = await restaurantTableBooking.isTableBooked('Table three')
-        console.log("booked ", booked)
+  
         assert.equal(true, booked);
     });
 
-    // it("should list all booked tables.", async function () {
-    //     let restaurantTableBooking = RestaurantTableBooking(db);
-    //     let tables = await restaurantTableBooking.getTables();
-    //     assert.deepEqual(6, tables.length);
-    // });
+    it("should list all booked tables.", async function () {
+        let restaurantTableBooking = RestaurantTableBooking(db);
+        let tables = await restaurantTableBooking.getTables();
+        assert.deepEqual(6, tables.length);
+    });
 
-    // it("should allow users to book tables", async function () {
-    //     let restaurantTableBooking = await RestaurantTableBooking(db);
+    it("should allow users to book tables", async function () {
+        let restaurantTableBooking = await RestaurantTableBooking(db);
 
-    //     assert.deepEqual([], await restaurantTableBooking.getBookedTablesForUser('jodie'));
+        assert.deepEqual([], await restaurantTableBooking.getBookedTablesForUser('jodie'));
         
-    //     restaurantTableBooking.bookTable({
-    //         tableName: 'Table five',
-    //         username: 'Jodie',
-    //         phoneNumber: '084 009 8910',
-    //         seats: 4
-    //     });
+        await restaurantTableBooking.bookTable({
+            tableName: 'Table five',
+            username: 'Jodie',
+            phoneNumber: '084 009 8910',
+            seats: 4
+        });
 
-    //     restaurantTableBooking.bookTable({
-    //         tableName: 'Table four',
-    //         username: 'Jodie',
-    //         phoneNumber: '084 009 8910',
-    //         seats: 2
-    //     });
+        await restaurantTableBooking.bookTable({
+            tableName: 'Table four',
+            username: 'Jodie',
+            phoneNumber: '084 009 8910',
+            seats: 2
+        });
 
-    //     await restaurantTableBooking.bookTable({
-    //         tableName: 'Table five',
-    //         username: 'Jodie',
-    //         phoneNumber: '084 009 8910',
-    //         seats: 4
-    //     })
+        await restaurantTableBooking.bookTable({
+            tableName: 'Table five',
+            username: 'Jodie',
+            phoneNumber: '084 009 8910',
+            seats: 4
+        })
 
-    //     // should only return 2 bookings as two of the bookings were for the same table
-    //     assert.deepEqual([{}, {}], await restaurantTableBooking.getBookedTablesForUser('jodie'));
-    // });
+        // should only return 2 bookings as two of the bookings were for the same table
+        assert.deepEqual([{table_name: 'Table four' }, { table_name: 'Table five' }], await restaurantTableBooking.getBookedTablesForUser('jodie'));
+    });
 
     // it("should be able to cancel a table booking", async function () {
     //     let restaurantTableBooking = await RestaurantTableBooking(db);
